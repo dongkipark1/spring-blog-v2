@@ -3,11 +3,9 @@ package shop.mtcoding.blog.board;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 
@@ -15,32 +13,32 @@ import java.util.List;
 @Controller
 public class BoardController {
 
-    private final BoardNativeRepository boardNativeRepository;
+    private final BoardPersistRepository boardPersistRepository;
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, String title, String content, String username){
 
-        boardNativeRepository.updateById(id, title, content, username);
+        boardPersistRepository.updateById(id, title, content, username);
         return "redirect:/board/" + id;
     }
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable Integer id, HttpServletRequest request){
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         request.setAttribute("board", board);
         return "board/update-form";
     }
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
-        boardNativeRepository.deleteById(id);
+        boardPersistRepository.deleteById(id);
         return "redirect:/";
     }
 
 
     @PostMapping("/board/save")
-    public String save(String title, String content, String username){
-        boardNativeRepository.save(title,content,username);
+    public String save(BoardRequest.SaveDTO reqDTO){
+        boardPersistRepository.save(reqDTO.toEntity());
         return "redirect:/";
     }
 
@@ -50,7 +48,7 @@ public class BoardController {
 
 
         // 실제로는 화면에 필요한 정보만을 줘야 한다(id, title) 프론트엔드가 일하기 힘들다.
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardPersistRepository.findAll();
         request.setAttribute("boardList", boardList); // 꺼내 볼 수 있기 때문에 request에 담는다
 
         return "index";
@@ -65,7 +63,7 @@ public class BoardController {
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
 
-        Board board = boardNativeRepository.findById(id);
+        Board board = boardPersistRepository.findById(id);
         request.setAttribute("board", board);
 
         return "board/detail";
