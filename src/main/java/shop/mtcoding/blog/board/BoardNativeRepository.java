@@ -7,10 +7,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Repository
 public class BoardNativeRepository {
     private final EntityManager em;
+
+    public List<Board> findAll(){
+        Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
+        return query.getResultList();
+    }
 
     @Transactional
     public void save(String title, String content, String username){

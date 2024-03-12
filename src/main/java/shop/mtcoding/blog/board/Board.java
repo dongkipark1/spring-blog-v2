@@ -2,6 +2,7 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import shop.mtcoding.blog.util.MyDateUtil;
 
 
 import java.sql.Timestamp;
@@ -19,4 +20,8 @@ public class Board {
     private String content;
     private String username;
     private Timestamp createdAt;
+
+    public String getTime(){
+        return MyDateUtil.timestampFormat(createdAt);
+    }
 }
