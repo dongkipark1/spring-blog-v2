@@ -17,6 +17,25 @@ public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
 
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable Integer id, String title, String content, String username){
+//        System.out.println("id: " + id);
+//        System.out.println("title: " + title);
+//        System.out.println("content: " + content);
+//        System.out.println("username: " + username);
+
+
+
+        return "redirect:/board/" + id;
+    }
+
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest request){
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+        return "board/update-form";
+    }
+
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
         boardNativeRepository.deleteById(id);
@@ -27,7 +46,6 @@ public class BoardController {
     @PostMapping("/board/save")
     public String save(String title, String content, String username){
         boardNativeRepository.save(title,content,username);
-
         return "redirect:/";
     }
 
