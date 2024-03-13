@@ -14,6 +14,11 @@ import java.util.List;
 public class BoardPersistRepository {
     private final EntityManager em;
 
+    @Transactional
+    public void updateById(int id, BoardRequest.UpdateDTO reqDTO){
+        Board board = findById(id);
+        board.update(reqDTO);
+    }  // 영속화 된 객체의 상태를 변경하고 트랜잭션이 종료되면 업데이트가 된다 -> 더티 체킹
 
     //테스트 해보기
     @Transactional // 트랜잭션의 기본이 commit, rollback 트랜잭션이 안되면 롤백 이게 기본
@@ -32,18 +37,6 @@ public class BoardPersistRepository {
     public void deleteById(int id){
         Query query = em.createQuery("delete from Board b where b.id = :id");
         query.setParameter("id", id);
-        query.executeUpdate();
-    }
-
-    @Transactional
-    public void updateById(Integer id, String title, String content, String username){
-        Query query =
-                em.createNativeQuery("update board_tb set title = ?, content = ?, username = ? where id=?");
-        query.setParameter(1, title);
-        query.setParameter(2, content);
-        query.setParameter(3, username);
-        query.setParameter(4, id);
-
         query.executeUpdate();
     }
 

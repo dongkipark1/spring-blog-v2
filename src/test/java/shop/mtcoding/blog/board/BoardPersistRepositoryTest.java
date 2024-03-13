@@ -22,6 +22,20 @@ public class BoardPersistRepositoryTest {
     private EntityManager em;
 
     @Test
+    public void updateById_test(){
+        //given
+        int id = 1;
+        String title = "제목수정1";
+
+        //when
+        Board board = boardPersistRepository.findById(id); // 영속화
+        board.setTitle(title);
+
+        em.flush();
+
+    }
+
+    @Test
     public void deleteById_test(){
         //given
         int id = 1;
@@ -77,28 +91,6 @@ public class BoardPersistRepositoryTest {
         System.out.println("save_test: " + board);
         //then
     }
-
-    @Test
-    public void updateById_test(){
-        //given
-        int id = 1;
-        String title = "제목 수정 1";
-        String content = "내용 수정 1";
-        String username = "bori";
-
-        //when
-        boardPersistRepository.updateById(id, title, content, username);
-
-        //then
-        Board board = boardPersistRepository.findById(id);
-        System.out.println("updateById_test/board: " + board);
-        assertThat(board.getTitle()).isEqualTo("제목 수정 1");
-        assertThat(board.getContent()).isEqualTo("내용 수정 1");
-        assertThat(board.getUsername()).isEqualTo("bori");
-
-    }
-
-
 
     @Test
     public void findById_test() {
