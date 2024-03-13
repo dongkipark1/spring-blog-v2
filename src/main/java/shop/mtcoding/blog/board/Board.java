@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import shop.mtcoding.blog.user.User;
 import shop.mtcoding.blog.util.MyDateUtil;
 
 
@@ -20,24 +21,12 @@ public class Board {
     private Integer id;
     private String title;
     private String content;
-    private String username;
+
+//    @JoinColumn(name = "user_id")
+//    @ManyToOne
+//    private User user; // MANY = BOARD, ONE = USER  pk를 만들어 줄게 user_id
 
     @CreationTimestamp // pc -> DB (날짜가 주입된다)
     private Timestamp createdAt;
 
-    public Board(String title, String content, String username) {
-        this.title = title;
-        this.content = content;
-        this.username = username;
-    }
-
-    public void update(BoardRequest.UpdateDTO reqDTO){
-        this.title = reqDTO.getTitle();
-        this.content = reqDTO.getContent();
-        this.username = reqDTO.getUsername();
-    }
-
-    public String getTime(){
-        return MyDateUtil.timestampFormat(createdAt);
-    }
 }
