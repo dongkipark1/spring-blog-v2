@@ -45,10 +45,8 @@ public class BoardController {
         return "/board/save-form";
     }
 
-    // 래핑 클래스를 쓰면 null이 들어오는 지 확인이 가능함(null 처리가 편함)
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
-
         return "board/detail";
     }
 }
