@@ -18,6 +18,23 @@ public class BoardPersistRepositoryTest {
     private BoardPersistRepository boardPersistRepository;
 
     @Test
+    public void findAll_test() {
+        // given
+
+        // when
+        List<Board> boardList = boardPersistRepository.findAll();
+
+        // then
+        System.out.println("findAll_test/size : " + boardList.size());
+        System.out.println("findAll_test/username : " + boardList.get(2).getUsername());
+
+        // org.assertj.core.api
+        assertThat(boardList.size()).isEqualTo(4);
+        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
+    }
+
+
+    @Test
     public void save_test(){
         //given
         Board board = new Board("제목","내용5", "ssar");
@@ -76,21 +93,5 @@ public class BoardPersistRepositoryTest {
         assertThat(board.getContent()).isEqualTo("내용1");
     }
 
-    @Test
-    public void findAll_test() {
-
-        //given
-
-        //when
-        List<Board> boardList = boardPersistRepository.findAll();
-
-        //then
-        System.out.println("findAll_test/size: " + boardList.size());
-        System.out.println("findAll_test/username: " + boardList.get(2).getUsername());
-
-        //org.assertj.core.api
-        assertThat(boardList.size()).isEqualTo(4);
-        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
-    }
 
 }

@@ -33,7 +33,7 @@ public class BoardPersistRepository {
     }
 
     public List<Board> findAll(){
-        Query query = em.createNativeQuery("select * from board_tb order by id desc", Board.class);
+        Query query = em.createQuery("select b from Board b order by b.id desc", Board.class);
         return query.getResultList();
     }
 
