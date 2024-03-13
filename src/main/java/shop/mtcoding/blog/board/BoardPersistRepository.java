@@ -14,6 +14,27 @@ import java.util.List;
 public class BoardPersistRepository {
     private final EntityManager em;
 
+
+    //테스트 해보기
+    @Transactional // 트랜잭션의 기본이 commit, rollback 트랜잭션이 안되면 롤백 이게 기본
+    //스프링이 트랜잭션 어노테이션을 하면 리플렉션을 하게 된다 고립성을 가진다
+    //종료 될때 기본이 commit이다.
+    //예외가 발생하면 기본값이 롤백이다
+    //이걸 자동으로 해준다
+    //트랜잭션도 중복이 걸린다
+    public void deleteByIdV2(int id){
+        Board board = findById(id);
+        em.remove(board); // PC에 객체를 채우고, (트랜잭션이 종료 시에) 쿼리를 전송을 한다 쿼리가 날아가지 않는다? 트랜잭션이 종료가 되지 않았다는 것
+    }
+    //트랜잭션이 날아갈 때 쿼리가 날아감
+
+    @Transactional
+    public void deleteById(int id){
+        Query query = em.createQuery("delete from Board b where b.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
     @Transactional
     public void updateById(Integer id, String title, String content, String username){
         Query query =
@@ -27,9 +48,8 @@ public class BoardPersistRepository {
     }
 
     public Board findById(int id){
-        Query query = em.createNativeQuery("select * from board_tb where id = ?", Board.class);
-        query.setParameter(1, id);
-        return (Board) query.getSingleResult();
+        Board board = em.find(Board.class, id);
+        return board;
     }
 
     public List<Board> findAll(){
@@ -45,12 +65,5 @@ public class BoardPersistRepository {
         return board;
     }
 
-    @Transactional
-    public void deleteById(int id){
-        Query query =
-                em.createNativeQuery("delete from board_tb where id = ?");
-        query.setParameter(1, id);
 
-        query.executeUpdate();
-    }
 }

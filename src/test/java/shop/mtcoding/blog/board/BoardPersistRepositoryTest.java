@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -16,6 +17,39 @@ public class BoardPersistRepositoryTest {
 
     @Autowired // DI   IoC에 있는 것을 DI
     private BoardPersistRepository boardPersistRepository;
+
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void deleteById_test(){
+        //given
+        int id = 1;
+
+        //when
+        boardPersistRepository.deleteById(id);
+
+        //then
+//        List<Board> boardList = boardPersistRepository.findAll();
+//        assertThat(boardList.size()).isEqualTo(3);
+    }
+
+    @Test
+    public void deleteByIdV2_test(){
+        //given
+        int id = 1;
+
+        //when
+        boardPersistRepository.deleteByIdV2(id);
+        //쿼리를 강제로 날린다.
+        em.flush(); // 버퍼에 쥐고 있는 쿼리를 즉시 전송 테스트 코드에서만
+    } //테스트 코드는 기본값이 롤백이다 왜? 정보를 저장할 필요가 없스니까
+
+    //트랜잭션이 날아갈 때 쿼리가 날아감
+    //그러나 왜 안날아가는 가 자식 쿼리
+    //내부에 들고 있는 어노테이션 레터 어노테이션
+
+
 
     @Test
     public void findAll_test() {
@@ -64,18 +98,7 @@ public class BoardPersistRepositoryTest {
 
     }
 
-    @Test
-    public void deleteById_test(){
-        //given
-        int id = 1;
 
-        //when
-        boardPersistRepository.deleteById(id);
-
-        //then
-        List<Board> boardList = boardPersistRepository.findAll();
-        assertThat(boardList.size()).isEqualTo(3);
-    }
 
     @Test
     public void findById_test() {
@@ -85,7 +108,9 @@ public class BoardPersistRepositoryTest {
 
         //when
         Board board = boardPersistRepository.findById(id);
-//        System.out.println("findById_test:" +board);
+        em.clear(); //PC를 비운다.
+        boardPersistRepository.findById(id); // 캐싱
+        System.out.println("findById_test:" +board);
 
         //then
 
