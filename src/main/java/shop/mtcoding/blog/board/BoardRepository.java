@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Repository
+@Repository // new BoardRepository IoC 컨테이너 등록
 public class BoardRepository {
     private final EntityManager em;
 
