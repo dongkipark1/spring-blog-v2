@@ -17,9 +17,6 @@ public class UserController {
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO){
         User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
-        if (sessionUser == null){
-            return "redirect:/login-form";
-        }
 
         session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
@@ -42,6 +39,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
+        session.invalidate();
         return "redirect:/";
     }
 }
