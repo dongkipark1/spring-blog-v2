@@ -39,6 +39,8 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {  //index(Model model)model이란 객체를 담는다. 실질적으로 request model내부에 request가 있다
+        List<Board> boardList = boardRepository.findAll();
+        request.setAttribute("boardList", boardList);
         return "index";
     }
 

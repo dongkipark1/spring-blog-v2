@@ -14,6 +14,15 @@ public class BoardRepositoryTest {
     private BoardRepository boardRepository;
 
     @Test
+    public void findAll_test(){
+        //given
+
+        //when
+        boardRepository.findAll();
+        //then
+    }
+
+    @Test
     public void findByIdJoinUser(){
         int id = 1;
 
