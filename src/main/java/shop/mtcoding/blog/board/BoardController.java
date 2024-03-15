@@ -34,17 +34,7 @@ public class BoardController {
         return "redirect:/board/" + id;
     }
 
-    @GetMapping("/board/{id}/update-form")
-    public String updateForm(@PathVariable Integer id, HttpServletRequest request){
-        Board board = boardRepository.findById(id);
 
-        if (board == null){
-            throw new Exception404("해당 게시글 찾을 수 없음");
-        }
-
-        request.setAttribute("board", board);
-        return "board/update-form";
-    }
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
@@ -100,3 +90,4 @@ public class BoardController {
         return "board/detail";
     }
 }
+
