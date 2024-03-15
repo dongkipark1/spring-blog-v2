@@ -13,13 +13,13 @@ public class UserRepository {
     private final EntityManager em;
 
 
-    public User updateById(int id, String password, String email){
-        User user = findById(id);
+    public User updateById(int id, String password, String email){ // 값을 받아야
+        User user = findById(id); // 영속화 시킴
         user.setPassword(password);
         user.setEmail(email);
 
         return user;
-    }
+    } // 더티체킹
 
     public User findById(int id){
         User user = em.find(User.class, id);
