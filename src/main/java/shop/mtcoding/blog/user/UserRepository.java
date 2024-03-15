@@ -5,11 +5,26 @@ import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.board.Board;
 
 @RequiredArgsConstructor
 @Repository
 public class UserRepository {
     private final EntityManager em;
+
+
+    public User updateById(int id, String password, String email){
+        User user = findById(id);
+        user.setPassword(password);
+        user.setEmail(email);
+
+        return user;
+    }
+
+    public User findById(int id){
+        User user = em.find(User.class, id);
+        return user;
+    }
 
     @Transactional
     public User saveV2(String username, String password, String email){

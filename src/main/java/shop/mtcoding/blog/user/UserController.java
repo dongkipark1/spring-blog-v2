@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,14 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final HttpSession session;
+
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO reqDTO){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        User newSessionUser = userRepository.updateById(sessionUser.getId(), reqDTO.getPassword(), reqDTO.getEmail());
+        session.setAttribute("sessionUser", newSessionUser);
+        return "redirect:/";
+    }
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO){
@@ -38,8 +47,14 @@ public class UserController {
         return "/user/login-form";
     }
 
-    @GetMapping("/user/update-form")
-    public String updateForm() {
+    @GetMapping("/user/update-form") // 세션값이 있어서 id를 적지 않는다.
+    public String updateForm(HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+
+        //왜 이게 정상적인 코드냐? 세션 유저는 실제로는 value오브젝트(세션유저 객체, 그냥 값을 들고 있는 오브젝트)를 만든다
+        // Entity, DTO 아니면 VALUE 오브젝트
+        User user = userRepository.findById(sessionUser.getId());
+        request.setAttribute("user", sessionUser);
         return "/user/update-form";
     }
 

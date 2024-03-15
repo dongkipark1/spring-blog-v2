@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,31 @@ public class UserRepositoryTest {
 
     @Autowired //DI
     private UserRepository userRepository; // new가 되지 않기 때문에 final을 쓰지 않는다.
+
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void updateById_test(){
+        //given
+        int id = 1;
+        String password = "123456";
+        String email = "kim@nate.com";
+        //when
+        userRepository.updateById(id, password, email);
+        em.flush();
+
+        //then
+    }
+
+    @Test
+    public void findById_test(){
+        //given
+        int id = 1;
+        //when
+        userRepository.findById(id);
+        //then
+    }
 
     @Test
     public void findByUsername_test(){
