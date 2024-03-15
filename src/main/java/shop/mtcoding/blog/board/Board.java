@@ -39,4 +39,8 @@ public class Board {
         this.user = user;
         this.createdAt = createdAt;
     }
+
+    public void update(){  //의미있는 메서드를 만들자
+
+    }
 }

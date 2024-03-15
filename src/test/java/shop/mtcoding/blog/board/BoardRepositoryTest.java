@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,6 +15,21 @@ public class BoardRepositoryTest {
 
     @Autowired
     private BoardRepository boardRepository;
+
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void updateById_test(){
+        //given
+        int id = 1;
+        String title = "hi";
+        String content = "안녕하세요";
+        //when
+        boardRepository.updateById(id, title, content);
+        em.flush(); // 실제 코드에는 작성 안해도 된다? why? 트랜잭션 종료가 될거니까 여기는 트랜잭션 종료가 되면 테스트 종료되서 코드 못 봄
+        //then
+    }
 
     @Test
     public void deleteById_test(){
