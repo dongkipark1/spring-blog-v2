@@ -20,6 +20,7 @@ public class BoardRepository {
     // update board_tb set content =? where id = ?
     // update board_tb set title=? , set content =? where id = ?
     // 이렇게 짜는 것 보다 밑에 처럼 짜는 게 낫다.
+    @Transactional
     public void updateById(int id, String title, String content){
         Board board = findById(id);
         board.setTitle(title);
