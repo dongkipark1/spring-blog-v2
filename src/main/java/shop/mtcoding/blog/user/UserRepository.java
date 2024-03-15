@@ -12,7 +12,7 @@ import shop.mtcoding.blog.board.Board;
 public class UserRepository {
     private final EntityManager em;
 
-
+    @Transactional
     public User updateById(int id, String password, String email){ // 값을 받아야
         User user = findById(id); // 영속화 시킴
         user.setPassword(password);
