@@ -19,6 +19,8 @@ public class UserRepositoryTest {
     @Autowired
     private EntityManager em;
 
+
+
     @Test
     public void updateById_test(){
         //given
@@ -48,7 +50,7 @@ public class UserRepositoryTest {
         reqDTO.setUsername("ssar");
         reqDTO.setPassword("1234");
         //when
-        User user = userRepository.findByUsernameAndPassword(reqDTO);
+        User user = userRepository.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword());
 
         //then
         Assertions.assertThat(user.getUsername()).isEqualTo("ssar");
