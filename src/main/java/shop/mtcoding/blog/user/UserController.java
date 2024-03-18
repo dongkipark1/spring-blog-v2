@@ -18,7 +18,6 @@ import shop.mtcoding.blog._core.errors.exception.Exception401;
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
     private final HttpSession session;
 
     @GetMapping("/user/update-form") // 세션값이 있어서 id를 적지 않는다.

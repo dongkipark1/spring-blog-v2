@@ -18,19 +18,22 @@ import java.util.List;
 @Controller // new BoardController(IoC에서 BoardRepository를 찾아서 주입) -> IoC 컨테이너 등록
 public class BoardController {
 
+    private final BoardService boardService;
     private final BoardRepository boardRepository;
     private final HttpSession session;
+
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest request){
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Board board = boardService.게시글수정폼(id,sessionUser.getId());
+        request.setAttribute("board", board);
+        return "board/update-form";
+    }
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findById(id);
-
-        if (sessionUser.getId() != board.getUser().getId()){
-            throw new Exception403("게시글 수정 권한 없음");
-        }
-
-        boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
+        boardService.글수정(id, sessionUser.getId(), reqDTO);
         return "redirect:/board/" + id;
     }
 
@@ -53,7 +56,7 @@ public class BoardController {
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        boardRepository.save(reqDTO.toEntity(sessionUser));
+        boardService.글쓰기(reqDTO, sessionUser);
 
         return "redirect:/";
     }
