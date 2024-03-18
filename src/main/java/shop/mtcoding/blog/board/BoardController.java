@@ -76,5 +76,11 @@ public class BoardController {
         request.setAttribute("board", board);
         return "board/detail";
     }
+
+    @GetMapping("/v2/board/{id}")
+    public @ResponseBody Board detailV2(@PathVariable Integer id, HttpServletRequest request) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        return boardService.글상세보기(id, sessionUser);
+    }
 }
 
