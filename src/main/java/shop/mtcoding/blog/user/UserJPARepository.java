@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 
 //자동 COMPONENT SCAN이 된다.
 //컴포넌트 스캔으로 NEW 하려고 했으나 INTERFACE라서 NEW가 불가능
@@ -16,5 +18,7 @@ public interface UserJPARepository extends JpaRepository<User, Integer> {
     // 간단한 쿼리는 JPQL로 JPA레포지토리
     // 복잡한 것은 쿼리레포지토리
 //    @Query("SELECT u from User u where u.username = :username and u.password = :password ")
-    User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    Optional<User> findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    Optional<User> findByUsername(@Param("username") String username);
+    // NULL 체크 가능
 }
