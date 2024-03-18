@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog._core.errors.exception.Exception400;
+import shop.mtcoding.blog._core.errors.exception.Exception401;
 
 import java.util.Optional;
 
@@ -13,6 +14,14 @@ import java.util.Optional;
 public class UserService {
 
     private final UserJPARepository userJPARepository; // DI
+
+    public User 로그인(UserRequest.LoginDTO reqDTO){
+        // 해시검사 비교
+
+        User sessionUser = userJPARepository.findByUsernameAndPassword(reqDTO.getUsername(), reqDTO.getPassword())
+                .orElseThrow(() -> new Exception401("인증되지 않았습니다.")); // ex) ssar, 12345를 넣으면 옵셔널에 null이 뜬다 그래서 값이 null이면 orElse로 throw를 날린다.
+        return sessionUser;
+    }
 
     //회원 가입
     @Transactional
