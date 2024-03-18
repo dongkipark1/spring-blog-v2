@@ -64,4 +64,22 @@ public class BoardService {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
         return boardJPARepository.findAll(sort); // 지금은 가공이 되지않은 순수한 DB데이터
     }
+
+
+    // board, isOwner
+    public Board 글상세보기(Integer boardId, User sessionUser) {
+
+        Board board = boardJPARepository.findByIdJoinUser(boardId)
+                .orElseThrow(() -> new Exception404("게시글 찾을 수 없음"));
+        boolean isOwner = false;
+        if (sessionUser != null){
+            if (sessionUser.getId() == board.getUser().getId()) {
+                isOwner = true;
+            }
+        }
+
+        board.setOwner(isOwner);
+
+        return board;
+    }
 }

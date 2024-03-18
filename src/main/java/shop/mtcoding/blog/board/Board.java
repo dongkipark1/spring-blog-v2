@@ -26,10 +26,13 @@ public class Board {
 //    @JoinColumn(name = "user_id")
     // LAZY - 필요한 것만 가져옴, EAGER - 모두 JOIN이 일어난다
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user; // MANY = BOARD, ONE = USER  pk를 만들어 줄게 user_id
+    private User user; // MANY = BOARD, ONE = USER  pk를 만들어 줄게 user_id // ORM
 
     @CreationTimestamp // pc -> DB (날짜가 주입된다)
     private Timestamp createdAt;
+
+    @Transient // 테이블 생성이 안됨
+    private boolean isOwner;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {

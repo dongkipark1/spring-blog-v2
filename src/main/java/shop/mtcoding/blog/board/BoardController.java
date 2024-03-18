@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
@@ -19,7 +20,6 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService boardService;
-    private final BoardRepository boardRepository;
     private final HttpSession session;
 
     @GetMapping("/board/{id}/update-form")
@@ -66,22 +66,13 @@ public class BoardController {
         return "/board/save-form";
     }
 
+    //view는 서버사이드렌더링 할 때 필요한 것들만 화면에 만들어서 주기 때문에 DTO만들 필요없다.
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id, HttpServletRequest request) {
-
+    public String  detail(@PathVariable Integer id, HttpServletRequest request) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findByIdJoinUser(id);
+        Board board = boardService.글상세보기(id, sessionUser);
 
-        // 게시글의 주인이 아니라면 -> 로그인을 했으면 ->
-        // 로그인 한 유저가 = 게시글 쓴 사람과 일치하면 ->
-        // 주인이 맞다 -> else면 아니다
-        boolean isOwner = false;
-        if (sessionUser != null){
-            if (sessionUser.getId() == board.getUser().getId()){
-                isOwner = true;
-            }
-        }
-        request.setAttribute("isOwner", isOwner);
+//        request.setAttribute("isOwner", isOwner);
         request.setAttribute("board", board);
         return "board/detail";
     }
