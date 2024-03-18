@@ -24,8 +24,7 @@ public class BoardController {
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable Integer id, HttpServletRequest request){
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.게시글수정폼(id,sessionUser.getId());
+        Board board = boardService.글조회(id);
         request.setAttribute("board", board);
         return "board/update-form";
     }
@@ -42,13 +41,7 @@ public class BoardController {
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findById(id);
-
-        if (sessionUser.getId() != board.getUser().getId()){
-            throw new Exception403("게시글 삭제 권한 없음");
-        }
-
-        boardRepository.deleteById(id);
+        boardService.글삭제(id, sessionUser.getId());
         return "redirect:/";
     }
 
@@ -63,7 +56,7 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest request) {  //index(Model model)model이란 객체를 담는다. 실질적으로 request model내부에 request가 있다
-        List<Board> boardList = boardRepository.findAll();
+        List<Board> boardList = boardService.글목록조회();
         request.setAttribute("boardList", boardList);
         return "index";
     }
