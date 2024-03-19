@@ -52,7 +52,7 @@
                     <div>{{comment}}</div>
                 </div>
                 {{#replyOwner}}
-                <form action="/reply/{{id}}/delete" method="post">
+                <form action="/board/{{board.id}}/reply/{{id}}/delete" method="post">
                     <button class="btn">🗑</button>
                 </form>
                 {{/replyOwner}}
