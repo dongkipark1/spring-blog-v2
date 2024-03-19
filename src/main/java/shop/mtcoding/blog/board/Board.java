@@ -35,12 +35,12 @@ public class Board {
     private Timestamp createdAt;
 
     // 조회할 때 담는 용도로만 쓴다.
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY) //Entity 객체의 변수명 = foreign key의 주인
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE) //Entity 객체의 변수명 = foreign key의 주인
     private List<Reply> replies = new ArrayList<>();
     // ManyToOne은 디폴트가 EAGER이 기본전략, OneToMany는 디폴트가 LAZY가 기본전략
 
     @Transient // 테이블 생성이 안됨
-    private boolean isOwner;
+    private boolean isBoardOwner;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {

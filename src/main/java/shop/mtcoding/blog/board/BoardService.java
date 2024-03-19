@@ -66,19 +66,29 @@ public class BoardService {
     }
 
 
-    // board, isOwner
+    // board, isBoardOwner
     public Board 글상세보기(Integer boardId, User sessionUser) {
 
         Board board = boardJPARepository.findByIdJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글 찾을 수 없음"));
-        boolean isOwner = false;
+        boolean isBoardOwner = false;
         if (sessionUser != null){
             if (sessionUser.getId() == board.getUser().getId()) {
-                isOwner = true;
+                isBoardOwner = true;
             }
         }
 
-        board.setOwner(isOwner);
+        board.setBoardOwner(isBoardOwner);
+
+        board.getReplies().forEach(reply -> { // 댓글 1번부터
+            boolean isReplyOwner =false;
+            if (sessionUser != null) {
+                if (reply.getUser().getId() == sessionUser.getId()) {
+                    isReplyOwner = true;
+                }
+            }
+            reply.setReplyOwner(isReplyOwner);
+        });
 
         return board;
     }
