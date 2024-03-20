@@ -22,12 +22,9 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
-    @GetMapping("/board/{id}/update-form")
-    public String updateForm(@PathVariable Integer id, HttpServletRequest request){
-        Board board = boardService.글조회(id);
-        request.setAttribute("board", board);
-        return "board/update-form";
-    }
+    //TODO: 글 조회 API 필요
+    //TODO: 글목록 조회 API 작성 필요
+    //TODO: 글 상세보기 API 작성 필요
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO){
@@ -36,16 +33,12 @@ public class BoardController {
         return "redirect:/board/" + id;
     }
 
-
-
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id){
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardService.글삭제(id, sessionUser.getId());
         return "redirect:/";
     }
-
-
     @PostMapping("/board/save")
     public String save(BoardRequest.SaveDTO reqDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
@@ -53,34 +46,7 @@ public class BoardController {
 
         return "redirect:/";
     }
-
-    @GetMapping("/")
-    public String index(HttpServletRequest request) {  //index(Model model)model이란 객체를 담는다. 실질적으로 request model내부에 request가 있다
-        List<Board> boardList = boardService.글목록조회();
-        request.setAttribute("boardList", boardList);
-        return "index";
-    }
-
-    @GetMapping("/board/save-form")
-    public String saveForm() {
-        return "/board/save-form";
-    }
-
     //view는 서버사이드렌더링 할 때 필요한 것들만 화면에 만들어서 주기 때문에 DTO만들 필요없다.
-    @GetMapping("/board/{id}")
-    public String  detail(@PathVariable Integer id, HttpServletRequest request) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.글상세보기(id, sessionUser);
 
-//        request.setAttribute("isOwner", isOwner);
-        request.setAttribute("board", board);
-        return "board/detail";
-    }
-
-    @GetMapping("/v2/board/{id}")
-    public @ResponseBody Board detailV2(@PathVariable Integer id, HttpServletRequest request) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        return boardService.글상세보기(id, sessionUser);
-    }
 }
 
