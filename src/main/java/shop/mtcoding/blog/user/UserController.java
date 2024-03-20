@@ -21,10 +21,10 @@ public class UserController {
     private final HttpSession session;
 
     // TODO: 회원 정보 조회 API 필요 -> @GetMapping("/api/users/{id}") - 유저의 1번 정보 줘
-    @GetMapping("/api/users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> userinfo(@PathVariable Integer id){
-        User user = userService.회원조회(id);
-        return ResponseEntity.ok(new ApiUtil(user));
+        UserResponse.DTO respDTO = userService.회원조회(id);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     // 외부 입장에서는 이 주소가 좋다 id? 안 쓰더라도 주소 자체는 프론트입장에서 만드는 것
@@ -34,7 +34,7 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
         session.setAttribute("sessionUser", newSessionUser);
-        return ResponseEntity.ok(new ApiUtil(sessionUser));
+        return ResponseEntity.ok(new ApiUtil(newSessionUser));
     }
 
     @PostMapping("/join")

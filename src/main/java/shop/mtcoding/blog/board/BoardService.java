@@ -63,10 +63,11 @@ public class BoardService {
         boardJPARepository.deleteById(boardId);
     }
 
-    public List<Board> 글목록조회() {
+    public List<BoardResponse.MainDTO> 글목록조회() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        return boardJPARepository.findAll(sort); // 지금은 가공이 되지않은 순수한 DB데이터
-    }
+        List<Board> boardList = boardJPARepository.findAll(sort);
+        return boardList.stream().map(board -> new BoardResponse.MainDTO(board)).toList(); // 지금은 가공이 되지않은 순수한 DB데이터
+    } // boardList를 물길에 흘려서 순회하고, 하나씩 집어넣어 BoardResponse.MainDTO로 변환시킨 뒤 리턴해준다
 
 
     // board, isBoardOwner
