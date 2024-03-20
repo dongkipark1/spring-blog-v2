@@ -27,7 +27,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void 글수정(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO){  // 명확하게 만들어주자
+    public Board 글수정(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO){  // 명확하게 만들어주자
 
         // 조회, 예외처리
         Board board = boardJPARepository.findById(boardId)
@@ -41,11 +41,14 @@ public class BoardService {
         // 글 수정
         board.setTitle(reqDTO.getTitle());
         board.setContent(reqDTO.getContent());
+
+        return board;
     } // 더티 체킹
 
     @Transactional
-    public void 글쓰기(BoardRequest.SaveDTO reqDTO, User sessionUser){
-        boardJPARepository.save(reqDTO.toEntity(sessionUser));
+    public Board 글쓰기(BoardRequest.SaveDTO reqDTO, User sessionUser){
+        Board board = boardJPARepository.save(reqDTO.toEntity(sessionUser));
+        return board;
     }
 
     @Transactional
