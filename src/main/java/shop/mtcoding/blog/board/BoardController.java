@@ -31,8 +31,8 @@ public class BoardController {
     //TODO: 글 조회 API 작성 필요 -> @GetMapping("/api/boards/{id}")
     @GetMapping("/api/boards/{id}")
     public ResponseEntity<?> findOne(@PathVariable Integer id){
-        Board board = boardService.글조회(id);
-        return ResponseEntity.ok(new ApiUtil<>(board));
+        BoardResponse.DTO respDTO = boardService.글조회(id);
+        return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 
     //TODO: 글 상세보기 API 작성 필요 -> @GetMapping("/api/boards/{id}/detail")
@@ -48,8 +48,8 @@ public class BoardController {
     @PutMapping("/api/board/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody BoardRequest.UpdateDTO reqDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.글수정(id, sessionUser.getId(), reqDTO);
-        return ResponseEntity.ok(new ApiUtil<>(board));
+        BoardResponse.DTO respDTO = boardService.글수정(id, sessionUser.getId(), reqDTO);
+        return ResponseEntity.ok(new ApiUtil<>(respDTO));
     }
 
     @DeleteMapping("/api/boards/{id}")
@@ -62,8 +62,8 @@ public class BoardController {
     @PostMapping("/api/boards")
     public ResponseEntity<?> save(@RequestBody BoardRequest.SaveDTO reqDTO){
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.글쓰기(reqDTO, sessionUser);
-        return ResponseEntity.ok(new ApiUtil<>(board));
+        BoardResponse.DTO resqDTO = boardService.글쓰기(reqDTO, sessionUser);
+        return ResponseEntity.ok(new ApiUtil<>(resqDTO));
 
         //return entity가 위험한 이유 : json으로 변환할 때 레이지로딩이 걸려서 무한 순환 참조가 된다
         //즉 return에 DTO를 넘기면 된다.

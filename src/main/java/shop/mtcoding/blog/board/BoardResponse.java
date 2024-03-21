@@ -29,6 +29,19 @@ public class BoardResponse {
         }
     }
 
+    @Data
+    public static class DTO{
+        private int id;
+        private String title;
+        private String content;
+
+        public DTO(Board board) {
+            this.id = board.getId();
+            this.title = board.getTitle();
+            this.content = board.getContent();
+        }
+    }
+
 
     //게시글 상세보기 화면
     @Data

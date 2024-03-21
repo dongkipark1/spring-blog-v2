@@ -19,15 +19,15 @@ public class BoardService {
 
 
 
-    public Board 글조회(int boardId){
+    public BoardResponse.DTO 글조회(int boardId){
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글 찾을 수 없음"));
 
-        return board;
+        return new BoardResponse.DTO(board);
     }
 
     @Transactional
-    public Board 글수정(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO){  // 명확하게 만들어주자
+    public BoardResponse.DTO 글수정(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO){  // 명확하게 만들어주자
 
         // 조회, 예외처리
         Board board = boardJPARepository.findById(boardId)
@@ -42,13 +42,13 @@ public class BoardService {
         board.setTitle(reqDTO.getTitle());
         board.setContent(reqDTO.getContent());
 
-        return board;
+        return new BoardResponse.DTO(board);
     } // 더티 체킹
 
     @Transactional
-    public Board 글쓰기(BoardRequest.SaveDTO reqDTO, User sessionUser){
+    public BoardResponse.DTO 글쓰기(BoardRequest.SaveDTO reqDTO, User sessionUser){
         Board board = boardJPARepository.save(reqDTO.toEntity(sessionUser));
-        return board;
+        return new BoardResponse.DTO(board);
     }
 
     @Transactional
