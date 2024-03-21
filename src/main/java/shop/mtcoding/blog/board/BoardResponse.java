@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.board;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import shop.mtcoding.blog.reply.Reply;
@@ -9,6 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardResponse {
+
+
+    @Data
+    public static class CountDTO {
+        private Integer id;
+        private String title;
+        private String content;
+        private Integer userId;
+        private Long replyCount;
+
+        public CountDTO(Integer id, String title, String content, Integer userId, Long replyCount) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.userId = userId;
+            this.replyCount = replyCount;
+        }
+    }
+
 
     //게시글 상세보기 화면
     @Data

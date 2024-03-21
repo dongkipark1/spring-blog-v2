@@ -21,6 +21,17 @@ public class BoardJPARepositoryTest {
     private EntityManager em;
 
     @Test
+    public void findAllWithReplyCount_test(){
+        //given
+
+        //when
+        List<BoardResponse.CountDTO> boardCountDTOList = boardJPARepository.findAllWithReplyCount();
+        System.out.println(boardCountDTOList);
+
+        //then
+    }
+
+    @Test
     public void findByIdJoinUserAndReplies_test(){
         //given
         int id = 4;
