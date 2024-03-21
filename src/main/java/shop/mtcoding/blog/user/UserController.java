@@ -34,7 +34,10 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(sessionUser.getId(), reqDTO);
         session.setAttribute("sessionUser", newSessionUser);
-        return ResponseEntity.ok(new ApiUtil(newSessionUser));
+
+        // DTO 생성위치 예외
+        UserResponse.DTO respDTO = new UserResponse.DTO(sessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @PostMapping("/join")
